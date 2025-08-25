@@ -1,10 +1,11 @@
+import os
 from fastapi.testclient import TestClient
 from src.api.fastapi_app import app, get_rag_pipeline
 import json
 import pytest
-from unittest.mock import patch
 
-@patch("src.inference_repo.inference.order_response", return_value={"response": "mocked"})
+@pytest.mark.skipif(not os.path.exists("src/inference_repo/fine_tuned_checkpoint_9.pth"),
+                    reason="Checkpoint missing")
 class TestPipeline:
     async def query_test(self, query: str, config: dict):
         return {"result": [{"content": "This is a test process"}]}
