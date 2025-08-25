@@ -1,0 +1,17 @@
+PyMuPDF
+pypdf
+langchain-core
+transformers
+pillow
+torch
+numpy
+langchain-community
+sentence-transformers
+faiss-cpu
+ipykernel
+ipywidgets
+jupyter
+fastapi
+streamlit
+uvicorn
+sseclient

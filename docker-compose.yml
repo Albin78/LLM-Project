@@ -1,0 +1,35 @@
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    volumes:
+      - ./src:/app/src
+    container_name: fastapi
+    ports:
+      - "8000:8000"
+    command: uvicorn src.api.fastapi_app:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 50s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+  
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: streamlit
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "8501:8501"
+    command: streamlit run src/app/streamlit_app.py --server.port=8501 --server.address=0.0.0.0
+    
+    environment:
+      - API_BASE_URL=http://fastapi:8000
+    depends_on:
+      fastapi:
+        condition: service_healthy
+    restart: unless-stopped

@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# .pth file- model checkpoints
+*.pth
+
+# Ignore ipynb checkpoints
+.ipynb_checkpoints/
+
+# Ignore .jsonl file
+*.jsonl
