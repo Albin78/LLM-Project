@@ -27,14 +27,13 @@ model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
                         vocab_size=vocab_size
                     )
 
-TEST_ENV = os.getenv("TEST_ENV", 0) == 1
 
-if not TEST_ENV:
-    checkpoint_file = os.path.join(os.path.dirname(__file__), "fine_tuned_checkpoint_9.pth")
+def load_checkpoint(model: GPTLanguageModel, base_dir):
+    checkpoint_file = os.path.join(base_dir, "fine_tuned_checkpoint_9.pth")
     checkpoint = torch.load(checkpoint_file, map_location=device)
-else:
-    checkpoint = None
+    return checkpoint
 
+checkpoint = load_checkpoint(model, base_dir)
 model.load_state_dict(checkpoint["model_state_dict"])
 
 prompt = "What is symptoms of Cancer?"

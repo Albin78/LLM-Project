@@ -105,9 +105,6 @@ class GPTModelLLM(LLM):
             inputs = self.tokenizer.encode(formatted_prompt, allowed_special='all')
             inputs = torch.tensor(inputs, dtype=torch.long).unsqueeze(0).to(self.device)
                     
-            # else:
-            #     print("tokenizer has no `encode` attribute")
-            
             input_length = inputs.shape[1] if len(inputs.shape) > 1 else len(inputs)
             max_new_tokens = self.max_new_tokens
 

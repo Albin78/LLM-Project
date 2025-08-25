@@ -12,6 +12,8 @@ wheels/
 # .pth file- model checkpoints
 *.pth
 
+# environment
+.env
 # Ignore ipynb checkpoints
 .ipynb_checkpoints/
 

@@ -1,10 +1,7 @@
-import os
 from fastapi.testclient import TestClient
 from src.api.fastapi_app import app, get_rag_pipeline
 import json
-import pytest
 
-@pytest.mark.requires_checkpoint
 class TestPipeline:
     async def query_test(self, query: str, config: dict):
         return {"result": [{"content": "This is a test process"}]}
