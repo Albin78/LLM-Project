@@ -5,6 +5,7 @@ from typing import Dict, Any, Optional
 from src.model.GPTModel import GPTLanguageModel
 from src.tokenizer.regex_tokenizer import RegexTokenizer
 from src.inference_repo.inference import order_response
+from src.inference_repo.inference import load_checkpoint
 import torch
 import logging
 import os
@@ -67,8 +68,7 @@ class GPTModelLLM(LLM):
                                     vocab_size=vocab_size
                             )
             
-            checkpoint = torch.load(checkpoint_file,
-                                    map_location=device)
+            checkpoint = load_checkpoint(model, base_dir)
             model.load_state_dict(checkpoint["model_state_dict"])
             model.eval()
 
