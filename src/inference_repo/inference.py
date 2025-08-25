@@ -32,14 +32,23 @@ TEST_ENV = os.getenv("TEST_ENV", 0) == 1
 
 def load_checkpoint(mode, base_dir):
     checkpoint_file = os.path.join(base_dir, "fine_tune_checkpoint_9.pth")
-    if not TEST_ENV:
-        checkpoint = torch.load(checkpoint_file, map_location=device)
-        return checkpoint
-    else:
-        print("Checkpoint loading skipped")
-        return {"model_state_dict": {}}
+    if not os.path.exists(checkpoint_file):
+        raise FileNotFoundError(f"Checkpoint file not found: {checkpoint_file}")
+    return torch.load(checkpoint_file, map_location=device)
 
-checkpoint = load_checkpoint(model, base_dir)
+if not TEST_ENV:
+    from src.model.GPTModel import GPTLanguageModel
+    model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
+                        n_layer=n_layer, block_size=block_size,
+                        dropout=dropout, device=device,
+                        padding_token=padding_token, 
+                        vocab_size=vocab_size
+                    )
+    checkpoint = load_checkpoint(model, base_dir)
+else:
+    model = None
+    checkpoint = None
+    
 model.load_state_dict(checkpoint["model_state_dict"])
 
 prompt = "What is symptoms of Cancer?"
