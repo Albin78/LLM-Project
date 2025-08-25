@@ -8,7 +8,6 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 model_file = os.path.join(base_dir, "..", "tokenizer", "tokenizer_model.model")
 model_file = os.path.normpath(model_file)
 
-checkpoint_file = os.path.join(base_dir, "fine_tuned_checkpoint_9.pth")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -28,10 +27,15 @@ model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
                         vocab_size=vocab_size
                     )
 
+TEST_ENV = os.getenv("TEST_ENV", 0) == 1
 
-checkpoint = torch.load(checkpoint_file, map_location=device)
+if not TEST_ENV:
+    checkpoint_file = os.path.join(os.path.dirname(__file__), "fine_tuned_checkpoint_9.pth")
+    checkpoint = torch.load(checkpoint_file, map_location=device)
+else:
+    checkpoint = None
+
 model.load_state_dict(checkpoint["model_state_dict"])
-
 
 prompt = "What is symptoms of Cancer?"
 formatted_prompt = f"<|startoftext|><|User|>{prompt}<|Assistant|>"
