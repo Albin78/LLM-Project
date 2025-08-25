@@ -44,11 +44,11 @@ if not TEST_ENV:
                         padding_token=padding_token, 
                         vocab_size=vocab_size
                     )
-    checkpoint = load_checkpoint(model, base_dir)
+    checkpoint = load_checkpoint(model, os.path.dirname(__file__))
 else:
     model = None
     checkpoint = None
-    
+
 model.load_state_dict(checkpoint["model_state_dict"])
 
 prompt = "What is symptoms of Cancer?"
