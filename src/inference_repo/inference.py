@@ -28,10 +28,16 @@ model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
                     )
 
 
-def load_checkpoint(model: GPTLanguageModel, base_dir):
-    checkpoint_file = os.path.join(base_dir, "fine_tuned_checkpoint_9.pth")
-    checkpoint = torch.load(checkpoint_file, map_location=device)
-    return checkpoint
+TEST_ENV = os.getenv("TEST_ENV", 0) == 1
+
+def load_checkpoint(mode, base_dir):
+    checkpoint_file = os.path.join(base_dir, "fine_tune_checkpoint_9.pth")
+    if not TEST_ENV:
+        checkpoint = torch.load(checkpoint_file, map_location=device)
+        return checkpoint
+    else:
+        print("Checkpoint loading skipped")
+        return {"model_state_dict": {}}
 
 checkpoint = load_checkpoint(model, base_dir)
 model.load_state_dict(checkpoint["model_state_dict"])

@@ -13,7 +13,7 @@ wheels/
 *.pth
 
 # environment
-.env
+*.env
 
 # Ignore ipynb checkpoints
 .ipynb_checkpoints/
