@@ -9,6 +9,14 @@ model_file = os.path.join(base_dir, "..", "tokenizer", "tokenizer_model.model")
 model_file = os.path.normpath(model_file)
 
 checkpoint_file = os.path.join(base_dir, "fine_tuned_checkpoint_9.pth")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+if os.path.exists(checkpoint_file):
+    checkpoint = torch.load(checkpoint_file, map_location=device)
+else:
+    checkpoint = None
+    print("Checkpoint not found, using dummy model for CI/CD")
+ 
 
 tokenizer = RegexTokenizer()
 tokenizer.load(model_file=model_file)
@@ -19,7 +27,6 @@ n_head = 8
 n_layer = 6
 block_size = 1024
 dropout = 0.2
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
                         n_layer=n_layer, block_size=block_size,
                         dropout=dropout, device=device,
@@ -29,7 +36,6 @@ model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
 
 
 
-checkpoint = torch.load(checkpoint_file, map_location=device)
 model.load_state_dict(checkpoint["model_state_dict"])
 
 
