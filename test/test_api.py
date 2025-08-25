@@ -1,8 +1,10 @@
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import query
 from src.api.fastapi_app import app, get_rag_pipeline
 import json
+import pytest
+from unittest.mock import patch
 
+@patch("src.inference_repo.inference.order_response", return_value={"response": "mocked"})
 class TestPipeline:
     async def query_test(self, query: str, config: dict):
         return {"result": [{"content": "This is a test process"}]}
