@@ -34,7 +34,9 @@ def test_query():
     response = client.post("/query", json=payload)
     assert response.status_code == 200
     data = response.json()
-    assert "sources" in data
+    assert "answer" in data
+    assert "metadata" in data
+    assert "processing_time" in data
 
 def test_stream():
 
