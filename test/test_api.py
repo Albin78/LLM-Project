@@ -4,7 +4,10 @@ import json
 
 class TestPipeline:
     async def query(self, query: str, config: dict):
-        return {"result": [{"content": "This is a test process"}]}
+        return {
+            "answer": "This is a test process",
+            "sources": [{"content": "This is source content"}]
+        }
 
     async def stream(self, query: str, config: dict):
         yield {"content": "This is stream test"}
