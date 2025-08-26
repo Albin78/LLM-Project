@@ -1,3 +1,4 @@
+from tabnanny import check
 from src.model.GPTModel import GPTLanguageModel
 from src.tokenizer.regex_tokenizer import RegexTokenizer
 import torch
@@ -28,25 +29,19 @@ model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
                     )
 
 
-TEST_ENV = os.getenv("TEST_ENV", 0) == 1
+TEST_ENV = os.getenv("TEST_ENV", "0") == "1"
 
 def load_checkpoint(mode, base_dir):
     checkpoint_file = os.path.join(base_dir, "fine_tune_checkpoint_9.pth")
     if not os.path.exists(checkpoint_file):
         raise FileNotFoundError(f"Checkpoint file not found: {checkpoint_file}")
-    return torch.load(checkpoint_file, map_location=device)
+    checkpoint = torch.load(checkpoint_file, map_location=device)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    return checkpoint
 
 if not TEST_ENV:
-    from src.model.GPTModel import GPTLanguageModel
-    model = GPTLanguageModel(n_embedding=n_embedding, n_head=n_head,
-                        n_layer=n_layer, block_size=block_size,
-                        dropout=dropout, device=device,
-                        padding_token=padding_token, 
-                        vocab_size=vocab_size
-                    )
-    checkpoint = load_checkpoint(model, os.path.dirname(__file__))
+    checkpoint = load_checkpoint(model, base_dir)
 else:
-    model = None
     checkpoint = None
 
 model.load_state_dict(checkpoint["model_state_dict"])
