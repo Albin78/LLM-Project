@@ -3,8 +3,12 @@ from src.api.fastapi_app import app, get_rag_pipeline
 import json
 
 class TestPipeline:
-    async def query_test(self, query: str, config: dict):
+    async def query(self, query: str, config: dict):
         return {"result": [{"content": "This is a test process"}]}
+
+    async def stream(self, query: str, config: dict):
+        yield {"content": "This is stream test"}
+        yield {"done": True}
 
 
 def override_testpipeline():
@@ -28,6 +32,7 @@ def test_query():
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, dict)
+    assert "answer" in data
 
 def test_stream():
 
@@ -46,15 +51,15 @@ def test_stream():
 
         query_processed = False
 
-        for line in response.aiter_lines():
+        for line in response.iter_lines():
 
             if not line:
                 continue
             
-            assert line.startswith("data: ")
+            assert line.startswith(b"data: ")
 
             try:
-                data = json.loads(line[2:])
+                data = json.loads(line[len(b"data: "):])
 
             except Exception as e:
                 assert False, f"Error in json loads: {e}"
