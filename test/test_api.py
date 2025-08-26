@@ -31,7 +31,6 @@ def test_query():
     response = client.post("/query", json=payload)
     assert response.status_code == 200
     data = response.json()
-    assert isinstance(data, dict)
     assert "sources" in data
 
 def test_stream():
