@@ -27,10 +27,7 @@ jobs:
           pip install pytest 
       
       - name: Run tests
-        run:  TEST_ENV=1 PYTHONPATH=./src pytest -q
-        
-      - name: Run pytest
-        run: pytest -q
+        run:  TEST_ENV=1 PYTHONPATH=. pytest -q
   
   docker-build:
     runs-on: ubuntu-latest
