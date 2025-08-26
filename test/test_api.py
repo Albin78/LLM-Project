@@ -32,7 +32,7 @@ def test_query():
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, dict)
-    assert "answer" in data
+    assert "sources" in data
 
 def test_stream():
 
@@ -56,7 +56,7 @@ def test_stream():
             if not line:
                 continue
             
-            assert line.decode("utf-8").startswith("data: ")
+            assert line.startswith("data: ")
 
             try:
                 data = json.loads(line[len(b"data: "):])
