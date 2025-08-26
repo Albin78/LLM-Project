@@ -56,7 +56,7 @@ def test_stream():
             if not line:
                 continue
             
-            assert line.startswith(b"data: ")
+            assert line.decode("utf-8").startswith("data: ")
 
             try:
                 data = json.loads(line[len(b"data: "):])
