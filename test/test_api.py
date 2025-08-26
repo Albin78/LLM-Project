@@ -6,7 +6,11 @@ class TestPipeline:
     async def query(self, query: str, config: dict):
         return {
             "answer": "This is a test process",
-            "sources": [{"content": "This is source content"}]
+            "sources": [
+                {"content": "This is source content",
+                "metadata": {"doc_id": "test_doc", "page": 1}
+                }],
+                "processing_time": 0.02
         }
 
     async def stream(self, query: str, config: dict):
