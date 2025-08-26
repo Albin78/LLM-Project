@@ -44,7 +44,6 @@ if not TEST_ENV:
 else:
     checkpoint = None
 
-model.load_state_dict(checkpoint["model_state_dict"])
 
 prompt = "What is symptoms of Cancer?"
 formatted_prompt = f"<|startoftext|><|User|>{prompt}<|Assistant|>"
