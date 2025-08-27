@@ -75,9 +75,9 @@ Streamlit → http://localhost:8501
 
 🔍 API Endpoints
 
-POST /generate → Response from GPT model
+POST /query → Response from GPT model
 
-POST /rag-query → Response with RAG pipeline
+POST /stream → Response with Stream effect
 
 GET /health → Health check
 
